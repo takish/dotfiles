@@ -1,0 +1,49 @@
+" 基本
+set nocompatible
+
+set number
+set cursorline
+syntax on
+set termguicolors
+set background=dark
+
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set smartindent
+
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+set scrolloff=5
+set mouse=a
+
+colorscheme desert
+
+" ---- 追加：効率化と誤操作防止 ----
+
+" jj で Esc
+inoremap jj <Esc>
+
+" 強制上書きを確認
+set confirm
+
+" バッファ移動（VSCode風）
+nnoremap <Tab> :bnext<CR>
+nnoremap <S-Tab> :bprevious<CR>
+
+" 行頭・行末へ
+nnoremap H ^
+nnoremap L $
+
+" Esc 2 回で検索ハイライト解除
+nnoremap <Esc><Esc> :nohlsearch<CR>
+
+" 空白・タブの可視化
+set list
+set listchars=tab:▸\ ,trail:·
+
+" カーソル列の強調
+set cursorcolumn

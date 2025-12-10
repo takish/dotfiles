@@ -1,0 +1,281 @@
+# 少し凝った zshrc
+# License : MIT
+# http://mollifier.mit-license.org/
+
+########################################
+# 環境変数
+export LANG=ja_JP.UTF-8
+
+
+# 色を使用出来るようにする
+autoload -Uz colors
+colors
+
+# emacs 風キーバインドにする
+bindkey -e
+
+# ヒストリの設定
+HISTFILE=~/.zsh_history
+HISTSIZE=1000000
+SAVEHIST=1000000
+
+# プロンプト
+# 1行表示
+# PROMPT="%~ %# "
+# 2行表示
+PROMPT="%{${fg[green]}%}[%n@%m]%{${reset_color}%} %~
+%# "
+
+
+# 単語の区切り文字を指定する
+autoload -Uz select-word-style
+select-word-style default
+# ここで指定した文字は単語区切りとみなされる
+# / も区切りと扱うので、^W でディレクトリ１つ分を削除できる
+zstyle ':zle:*' word-chars " /=;@:{},|"
+zstyle ':zle:*' word-style unspecified
+
+########################################
+# 補完
+# 補完機能を有効にする
+autoload -Uz compinit
+compinit
+
+# 補完で小文字でも大文字にマッチさせる
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# ../ の後は今いるディレクトリを補完しない
+zstyle ':completion:*' ignore-parents parent pwd ..
+
+# sudo の後ろでコマンド名を補完する
+zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
+                   /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
+
+# ps コマンドのプロセス名補完
+zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
+
+
+########################################
+# vcs_info
+autoload -Uz vcs_info
+autoload -Uz add-zsh-hook
+
+zstyle ':vcs_info:*' formats '%F{green}(%s)-[%b]%f'
+zstyle ':vcs_info:*' actionformats '%F{red}(%s)-[%b|%a]%f'
+
+function _update_vcs_info_msg() {
+    LANG=en_US.UTF-8 vcs_info
+    RPROMPT="${vcs_info_msg_0_}"
+}
+add-zsh-hook precmd _update_vcs_info_msg
+
+
+########################################
+# オプション
+# 日本語ファイル名を表示可能にする
+setopt print_eight_bit
+
+# beep を無効にする
+setopt no_beep
+
+# フローコントロールを無効にする
+setopt no_flow_control
+
+# Ctrl+Dでzshを終了しない
+setopt ignore_eof
+
+# '#' 以降をコメントとして扱う
+setopt interactive_comments
+
+# ディレクトリ名だけでcdする
+setopt auto_cd
+
+# cd したら自動的にpushdする
+setopt auto_pushd
+# 重複したディレクトリを追加しない
+setopt pushd_ignore_dups
+
+# 同時に起動したzshの間でヒストリを共有する
+setopt share_history
+
+# 同じコマンドをヒストリに残さない
+setopt hist_ignore_all_dups
+
+# スペースから始まるコマンド行はヒストリに残さない
+setopt hist_ignore_space
+
+# ヒストリに保存するときに余分なスペースを削除する
+setopt hist_reduce_blanks
+
+# 高機能なワイルドカード展開を使用する
+setopt extended_glob
+
+########################################
+# キーバインド
+
+# ^R で履歴検索をするときに * でワイルドカードを使用出来るようにする
+bindkey '^R' history-incremental-pattern-search-backward
+
+########################################
+# エイリアス
+
+alias la='ls -a'
+alias ll='ls -l'
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+alias mkdir='mkdir -p'
+
+# sudo の後のコマンドでエイリアスを有効にする
+alias sudo='sudo '
+
+# グローバルエイリアス
+alias -g L='| less'
+alias -g G='| grep'
+
+# C で標準出力をクリップボードにコピーする
+# mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
+if which pbcopy >/dev/null 2>&1 ; then
+    # Mac
+    alias -g C='| pbcopy'
+elif which xsel >/dev/null 2>&1 ; then
+    # Linux
+    alias -g C='| xsel --input --clipboard'
+elif which putclip >/dev/null 2>&1 ; then
+    # Cygwin
+    alias -g C='| putclip'
+fi
+
+
+
+########################################
+# OS 別の設定
+case ${OSTYPE} in
+    darwin*)
+        #Mac用の設定
+        export CLICOLOR=1
+ 	export LSCOLORS=hxfxcxdxbxegedabagacad
+        alias ls='ls -G -F'
+        ;;
+    linux*)
+        #Linux用の設定
+        alias ls='ls -F --color=auto'
+        ;;
+esac
+
+# vim:set ft=zsh:
+
+# bun completions
+[ -s "/Users/takish/.bun/_bun" ] && source "/Users/takish/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export PATH=$HOME/Development/flutter/bin:$PATH
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/takish/Development/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/takish/Development/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/takish/Development/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/takish/Development/google-cloud-sdk/completion.zsh.inc'; fi
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+export PATH="/usr/local/texlive/2025basic/bin/universal-darwin/:$PATH"
+
+# --- auto attach tmux (interactive shell only) ---
+#if command -v tmux >/dev/null 2>&1; then
+#  case $- in
+#    *i*)
+#      # まだ tmux 内でなければ default に入る（なければ作成）
+#      if [ -z "$TMUX" ]; then
+#        tmux attach -t default 2>/dev/null || tmux new -s default
+#      fi
+#      ;;
+#  esac
+#fi
+
+#if command -v tmux &> /dev/null; then
+#  if [ -z "$TMUX" ]; then
+#    if [ "$TERM_PROGRAM" = "vscode" ]; then
+#      # Cursor (VSCode系) の場合
+#      exec tmux new-session -A -s cursor
+#    elif [ "$TERM_PROGRAM" = "kiro" ]; then
+#      exec tmux new-session -A -s windsurf
+#    else
+#      # iTerm の場合
+#      exec tmux new-session -A -s iterm
+#    fi
+#  fi
+#fi
+
+
+# --- tmux alias群 ---
+alias tc='tmux -L cursor new -As cursor'
+alias tw='tmux -L windsurf new -As windsurf'
+alias tv='tmux -L vscode new -As vscode'
+alias ti='tmux -L iterm new -As iterm'
+alias tls='ls -l /tmp/tmux-$(id -u)/'  # ソケット一覧
+alias tkill='for s in /tmp/tmux-$(id -u)/*; do tmux -S "$s" kill-server 2>/dev/null && echo "Killed: $s"; done'
+
+tnew() {
+  local name=$1
+  if [ -z "$name" ]; then
+    echo "Usage: tnew <name>"
+    return 1
+  fi
+  tmux -L "$name" new -As "$name"
+}
+# --- end ---
+
+# Added by Windsurf
+export PATH="/Users/takish/.codeium/windsurf/bin:$PATH"
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+
+export PATH="/Users/takish/.local/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/takish/.lmstudio/bin"
+# End of LM Studio CLI section
+
+
+# pnpm
+export PNPM_HOME="/Users/takish/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+# homebrew
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+
+########################################
+# Tailscale CLI
+# Tailscale CLI alias
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+
+# DNS無効でTailscaleに接続（Claude Code等の通信問題を回避）
+alias ts-up="tailscale up && tailscale set --accept-dns=false"
+
+# 切断
+alias ts-down="tailscale down"
+
+# 状態確認
+alias ts-status="tailscale status"
+
+# DNS動作確認
+alias ts-dns-check="echo 'Testing anthropic.com:' && dscacheutil -q host -a name api.anthropic.com"
+
+# Added by Antigravity
+export PATH="/Users/takish/.antigravity/antigravity/bin:$PATH"
+#export PATH="$(brew --prefix ruby)/bin:$PATH"
+. /opt/homebrew/opt/asdf/libexec/asdf.sh

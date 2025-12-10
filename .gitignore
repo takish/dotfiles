@@ -1,0 +1,8 @@
+# SQLite
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite-journal
+
+# Lock files
+*.lock

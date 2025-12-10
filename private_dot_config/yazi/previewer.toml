@@ -1,0 +1,5 @@
+# すべてのテキストファイルを bat ハイライト化
+[[previewers]]
+name = "text"
+mime = ["text/*"]
+command = "bat --color=always --style=numbers --line-range=:200 $YAZI_FILE"

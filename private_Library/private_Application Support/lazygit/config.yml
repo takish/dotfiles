@@ -1,0 +1,15 @@
+gui:
+  theme:
+    lightTheme: false
+    activeBorderColor: ["yellow"]
+    inactiveBorderColor: ["white"]
+    selectedLineBgColor: ["black"]
+    optionsTextColor: ["cyan"]
+  nerdFontsVersion: "3"
+  showIcons: true
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
+disableStartupPopups: true
+confirmOnQuit: false

@@ -1,0 +1,16 @@
+# ~/.config/yazi/theme.toml
+
+[filetype]
+rules = [
+  { name = "*/", fg = "#9CDCFE", bold = true },   # Directory
+  { name = "*.swift", fg = "#FFB454" },           # Swift
+  { name = "*.ts", fg = "#4FC1FF" },              # TypeScript
+  { name = "*.tsx", fg = "#4FC1FF" },             # TSX
+  { name = "*.js", fg = "#E6DB74" },              # JavaScript
+  { name = "*.json", fg = "#C5E478" },            # JSON
+  { name = "*.sh", fg = "#7CD67C" },              # Shell
+  { name = "*.md", fg = "#D1AFFF" },              # Markdown
+  { name = "*.ipa", fg = "#FFA07A", bold = true },# iOS builds
+  { name = "*.zip", fg = "#FFD27F" },             # Archives
+  { name = "*", fg = "#e0e0e0" },                 # Default
+]
