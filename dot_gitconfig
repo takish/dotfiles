@@ -1,0 +1,57 @@
+[core]
+  excludesfile = /Users/takish/.gitignore_global
+  editor = vim
+	pager = delta
+[user]
+  name = Takashi Kishida
+  email = takish34@gmail.com
+[color]
+  ui = true
+[push]
+  default = simple
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  required = true
+  process = git-lfs filter-process
+[alias]
+  co = checkout
+  st = status
+  br = branch
+  ci = commit
+  sw = switch
+  # いい感じのグラフでログを表示
+  graph = log --graph --date=short --decorate=short --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'
+  # 上の省略形
+  gr = log --graph --date=short --decorate=short --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'
+  # Untracked filesを表示せず，not stagedと，stagedだけの状態を出力する
+  stt = status -uno
+  # 行ごとの差分じゃなくて，単語レベルでの差分を色付きで表示する
+  difff = diff --word-diff
+  # ファイル名のみの差分を表示する
+  diffff = diff --name-only
+  # staged diff
+  diffs = diff --cached
+  dp = diff --no-prefix
+  dsp = diff --cached --no-prefix
+  logg = log --graph --all --decorate
+  log1 = log --pretty='format:%C(yellow)%h%Creset %C(magenta)%cd%Creset %s %Cgreen(%an)%Creset %Cred%d%Creset%C(black bold)%ar%Creset' --date=iso
+	lg = log --graph --abbrev-commit --decorate --date=relative   --all --pretty=format:'%C(auto)%h%d %s %C(black)%C(bold)%cr %C(auto)%an'
+  lga = !"git lg --all"
+  log0 = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(bold white)―  %an%C(reset)%C(bold yellow)%d%C(reset)' --abbrev-commit --date=relative
+  log2 = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(bold white)―  %an%C(reset)' --abbrev-commit
+  log3 = log --graph --date-order -C -M --pretty=format:"<%h> %ad [%an] %Cgreen%d%Creset %s" --all --date=short
+  log4 = log --graph --pretty='format:%C(yellow)%h%Cblue%d%Creset %s %C(black bold)%an, %ar%Creset'
+  sgraph = !"git log --oneline --graph"
+  ancestor = !zsh -c 'diff -u <(git rev-list --first-parent "${1:-master}") <(git rev-list --first-parent "${2:-HEAD}") | sed -ne \"s/^ //p\" | head -n 1' -
+[fetch]
+  prune = true
+[delta]
+	features = side-by-side line-numbers decorations
+	line-numbers = true
+	syntax-theme = Dracula
+[delta "decorations"]
+	commit-decoration-style = bold box
+	commit-style = raw
+	file-style = bold ul
+	file-decoration-style = none
