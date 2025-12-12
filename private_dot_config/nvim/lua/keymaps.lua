@@ -39,3 +39,6 @@ keymap('v', 'y', 'ygv<Esc>', { desc = 'ヤンク（位置保持）' })
 
 -- 選択してペースト後もレジスタを保持
 keymap('x', 'p', '"_dP', { desc = 'ペースト（レジスタ保持）' })
+
+-- 行番号トグル（コピー用）
+keymap('n', '<leader>n', ':set number!<CR>', { desc = '行番号トグル', silent = true })

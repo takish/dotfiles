@@ -2,15 +2,132 @@
 
 [filetype]
 rules = [
-  { name = "*/", fg = "#9CDCFE", bold = true },   # Directory
-  { name = "*.swift", fg = "#FFB454" },           # Swift
-  { name = "*.ts", fg = "#4FC1FF" },              # TypeScript
-  { name = "*.tsx", fg = "#4FC1FF" },             # TSX
-  { name = "*.js", fg = "#E6DB74" },              # JavaScript
-  { name = "*.json", fg = "#C5E478" },            # JSON
-  { name = "*.sh", fg = "#7CD67C" },              # Shell
-  { name = "*.md", fg = "#D1AFFF" },              # Markdown
-  { name = "*.ipa", fg = "#FFA07A", bold = true },# iOS builds
-  { name = "*.zip", fg = "#FFD27F" },             # Archives
-  { name = "*", fg = "#e0e0e0" },                 # Default
+  # Directories
+  { name = "*/", fg = "#9CDCFE", bold = true },
+
+  # Swift / iOS
+  { name = "*.swift", fg = "#FFB454" },
+  { name = "*.ipa", fg = "#FFA07A", bold = true },
+  { name = "*.xcodeproj", fg = "#FFB454" },
+  { name = "*.xcworkspace", fg = "#FFB454" },
+
+  # TypeScript / JavaScript
+  { name = "*.ts", fg = "#4FC1FF" },
+  { name = "*.tsx", fg = "#4FC1FF" },
+  { name = "*.js", fg = "#E6DB74" },
+  { name = "*.jsx", fg = "#E6DB74" },
+  { name = "*.mjs", fg = "#E6DB74" },
+  { name = "*.cjs", fg = "#E6DB74" },
+
+  # Web
+  { name = "*.html", fg = "#FF6347" },
+  { name = "*.css", fg = "#66D9EF" },
+  { name = "*.scss", fg = "#CC6699" },
+  { name = "*.vue", fg = "#41B883" },
+  { name = "*.svelte", fg = "#FF3E00" },
+
+  # Data / Config
+  { name = "*.json", fg = "#C5E478" },
+  { name = "*.yaml", fg = "#F1C40F" },
+  { name = "*.yml", fg = "#F1C40F" },
+  { name = "*.toml", fg = "#9B7ED9" },
+  { name = "*.xml", fg = "#F39C12" },
+  { name = "*.env", fg = "#E74C3C" },
+  { name = "*.env.*", fg = "#E74C3C" },
+
+  # Shell / Scripts
+  { name = "*.sh", fg = "#7CD67C" },
+  { name = "*.zsh", fg = "#7CD67C" },
+  { name = "*.bash", fg = "#7CD67C" },
+  { name = "*.fish", fg = "#7CD67C" },
+
+  # Go / Rust / Systems
+  { name = "*.go", fg = "#00ADD8" },
+  { name = "*.rs", fg = "#DEA584" },
+  { name = "*.c", fg = "#5E97D0" },
+  { name = "*.cpp", fg = "#5E97D0" },
+  { name = "*.h", fg = "#A8B9CC" },
+
+  # Python
+  { name = "*.py", fg = "#3776AB" },
+  { name = "*.pyi", fg = "#3776AB" },
+  { name = "*.ipynb", fg = "#F37626" },
+
+  # Ruby
+  { name = "*.rb", fg = "#CC342D" },
+  { name = "*.erb", fg = "#CC342D" },
+
+  # Lua
+  { name = "*.lua", fg = "#000080" },
+
+  # Documentation
+  { name = "*.md", fg = "#D1AFFF" },
+  { name = "*.mdx", fg = "#D1AFFF" },
+  { name = "*.txt", fg = "#BDBDBD" },
+  { name = "README*", fg = "#D1AFFF", bold = true },
+  { name = "LICENSE*", fg = "#BDBDBD", italic = true },
+
+  # Archives
+  { name = "*.zip", fg = "#FFD27F" },
+  { name = "*.tar", fg = "#FFD27F" },
+  { name = "*.gz", fg = "#FFD27F" },
+  { name = "*.bz2", fg = "#FFD27F" },
+  { name = "*.xz", fg = "#FFD27F" },
+  { name = "*.7z", fg = "#FFD27F" },
+  { name = "*.rar", fg = "#FFD27F" },
+
+  # Images
+  { name = "*.png", fg = "#A9DC76" },
+  { name = "*.jpg", fg = "#A9DC76" },
+  { name = "*.jpeg", fg = "#A9DC76" },
+  { name = "*.gif", fg = "#A9DC76" },
+  { name = "*.svg", fg = "#FFB86C" },
+  { name = "*.webp", fg = "#A9DC76" },
+  { name = "*.ico", fg = "#A9DC76" },
+
+  # Media
+  { name = "*.mp3", fg = "#FF79C6" },
+  { name = "*.mp4", fg = "#FF79C6" },
+  { name = "*.mkv", fg = "#FF79C6" },
+  { name = "*.mov", fg = "#FF79C6" },
+  { name = "*.wav", fg = "#FF79C6" },
+
+  # Docker / DevOps
+  { name = "Dockerfile", fg = "#2496ED", bold = true },
+  { name = "docker-compose*", fg = "#2496ED" },
+  { name = "*.dockerfile", fg = "#2496ED" },
+  { name = "Makefile", fg = "#6D8086", bold = true },
+
+  # Git
+  { name = ".gitignore", fg = "#F05032" },
+  { name = ".gitattributes", fg = "#F05032" },
+  { name = ".gitmodules", fg = "#F05032" },
+
+  # Package managers
+  { name = "package.json", fg = "#E8274B", bold = true },
+  { name = "package-lock.json", fg = "#CB3837" },
+  { name = "pnpm-lock.yaml", fg = "#F9AD00" },
+  { name = "yarn.lock", fg = "#2C8EBB" },
+  { name = "Cargo.toml", fg = "#DEA584", bold = true },
+  { name = "go.mod", fg = "#00ADD8", bold = true },
+  { name = "go.sum", fg = "#00ADD8" },
+
+  # Config files
+  { name = "*.config.*", fg = "#6D8086" },
+  { name = "tsconfig*.json", fg = "#4FC1FF" },
+  { name = ".eslintrc*", fg = "#4B32C3" },
+  { name = ".prettierrc*", fg = "#56B3B4" },
+
+  # Default
+  { name = "*", fg = "#e0e0e0" },
 ]
+
+# Status bar styling
+[status]
+separator_open = ""
+separator_close = ""
+
+# Selection styling
+[selection]
+active = { bg = "#3E4452" }
+inactive = { bg = "#2C323C" }

@@ -1,5 +1,86 @@
-[mgr]
-layout = "default"
+# ~/.config/yazi/yazi.toml
 
+[mgr]
 # ペイン比率（左:中央:右）
-ratio = [1, 1, 4]   # ★右ペインが一番広くなる設定
+ratio = [1, 2, 4]
+
+# ソート設定
+sort_by = "natural"
+sort_sensitive = false
+sort_reverse = false
+sort_dir_first = true
+
+# 表示設定
+linemode = "size"
+show_hidden = false
+show_symlink = true
+
+# スクロール時のマージン
+scrolloff = 5
+
+# マウスイベント
+mouse_events = ["click", "scroll", "touch", "move", "drag"]
+
+# ターミナルタイトル
+title_format = "Yazi: {cwd}"
+
+[preview]
+# タブ幅
+tab_size = 2
+
+# テキストの折り返し
+wrap = "no"
+
+# 画像プレビューの最大サイズ
+max_width = 1200
+max_height = 900
+
+# 画像フィルター（品質）
+image_filter = "lanczos3"
+image_quality = 80
+
+[open]
+prepend_rules = [
+  # テキストファイルをnvimで開く
+  { name = "*.ts", use = ["nvim"] },
+  { name = "*.tsx", use = ["nvim"] },
+  { name = "*.js", use = ["nvim"] },
+  { name = "*.jsx", use = ["nvim"] },
+  { name = "*.json", use = ["nvim"] },
+  { name = "*.md", use = ["nvim"] },
+  { name = "*.swift", use = ["nvim"] },
+  { name = "*.go", use = ["nvim"] },
+  { name = "*.rs", use = ["nvim"] },
+  { name = "*.py", use = ["nvim"] },
+  { name = "*.lua", use = ["nvim"] },
+  { name = "*.toml", use = ["nvim"] },
+  { name = "*.yaml", use = ["nvim"] },
+  { name = "*.yml", use = ["nvim"] },
+  { name = "*.sh", use = ["nvim"] },
+  { name = "*.zsh", use = ["nvim"] },
+  { mime = "text/*", use = ["nvim"] },
+]
+
+[opener]
+nvim = [
+  { run = 'nvim "$@"', desc = "Open in Neovim", block = true },
+]
+
+[tasks]
+# 並列タスク数
+micro_workers = 10
+macro_workers = 25
+bizarre_retry = 5
+
+# プリロードタスクを隠す
+suppress_preload = true
+
+# 画像デコードのメモリ制限（バイト、0=無制限）
+image_alloc = 0
+image_bound = [0, 0]
+
+[input]
+cursor_blink = true
+
+# Note: Default previewers handle most files well
+# Custom plugins can be added here if needed

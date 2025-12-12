@@ -35,6 +35,7 @@ opt.clipboard = 'unnamedplus' -- システムクリップボード
 opt.undofile = true         -- 永続的なundo
 opt.updatetime = 250        -- 更新間隔短縮
 opt.timeoutlen = 300        -- キーマップタイムアウト
+opt.redrawtime = 10000      -- シンタックスハイライトのタイムアウト (10秒)
 
 -- 空白の可視化
 opt.list = true
