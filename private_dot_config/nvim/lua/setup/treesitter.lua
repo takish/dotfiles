@@ -10,7 +10,6 @@ require('nvim-treesitter.configs').setup({
     'javascript',
     'lua',
     'bash',
-    'swift',
     -- マークアップ・設定
     'html',
     'css',
