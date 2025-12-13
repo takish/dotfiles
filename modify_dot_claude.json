@@ -1,0 +1,18 @@
+#!/bin/bash
+# Merge mcpServers from chezmoi into existing ~/.claude.json
+# This preserves all runtime stats while syncing MCP configuration
+
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+MCP_CONFIG="$SCRIPT_DIR/dot_claude.json.mcpServers"
+
+# Read current file from stdin
+current=$(cat)
+
+if [[ -f "$MCP_CONFIG" ]]; then
+    mcp_servers=$(cat "$MCP_CONFIG")
+    echo "$current" | jq --argjson mcp "$mcp_servers" '.mcpServers = $mcp'
+else
+    echo "$current"
+fi

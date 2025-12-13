@@ -1,0 +1,25 @@
+{
+  "chrome-devtools": {
+    "type": "stdio",
+    "command": "npx",
+    "args": [
+      "chrome-devtools-mcp@latest"
+    ],
+    "env": {}
+  },
+  "figma-mcp": {
+    "type": "http",
+    "url": "http://127.0.0.1:3845/mcp"
+  },
+  "firecrawl": {
+    "type": "stdio",
+    "command": "npx",
+    "args": [
+      "-y",
+      "firecrawl-mcp"
+    ],
+    "env": {
+      "FIRECRAWL_API_KEY": "fc-5166707ed0e74b358aad2dfbe2624b21"
+    }
+  }
+}

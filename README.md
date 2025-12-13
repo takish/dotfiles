@@ -296,6 +296,58 @@ chezmoi update
 # cd ~/.local/share/chezmoi && git pull && chezmoi apply
 ```
 
+### ケース11: 動的に更新されるファイルの一部だけを管理したい
+
+**状況:** Claude Code の `~/.claude.json` から MCP サーバー設定だけを同期したい
+
+`~/.claude.json` には以下のような情報が混在している：
+- MCP サーバー設定（`mcpServers`）→ 同期したい
+- 起動回数、トークン使用量などの統計 → 同期不要（常に変化する）
+
+**問題:** ファイル全体を管理すると、Claude Code 起動のたびに統計情報が更新され、毎回 `chezmoi apply` で競合が発生する。
+
+**解決策:** `modify_` スクリプトで特定のキーだけをマージする
+
+```bash
+# ステップ1: MCP設定だけを抽出
+cat ~/.claude.json | jq '.mcpServers' > ~/.local/share/chezmoi/dot_claude.json.mcpServers
+
+# ステップ2: マージスクリプトを作成
+cat > ~/.local/share/chezmoi/modify_dot_claude.json << 'EOF'
+#!/bin/bash
+set -e
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+MCP_CONFIG="$SCRIPT_DIR/dot_claude.json.mcpServers"
+
+current=$(cat)
+if [[ -f "$MCP_CONFIG" ]]; then
+    mcp_servers=$(cat "$MCP_CONFIG")
+    echo "$current" | jq --argjson mcp "$mcp_servers" '.mcpServers = $mcp'
+else
+    echo "$current"
+fi
+EOF
+
+# ステップ3: 実行権限を付与
+chmod +x ~/.local/share/chezmoi/modify_dot_claude.json
+```
+
+**`modify_` スクリプトの動作:**
+1. `chezmoi apply` 時、既存のターゲットファイル（`~/.claude.json`）を標準入力として受け取る
+2. `mcpServers` キーだけを上書き
+3. 統計情報など他のキーはそのまま保持
+
+**MCP設定を更新したい場合:**
+```bash
+# 現在の設定を再抽出
+cat ~/.claude.json | jq '.mcpServers' > ~/.local/share/chezmoi/dot_claude.json.mcpServers
+```
+
+**ポイント:**
+- `modify_` プレフィックスは、ファイルを置換するのではなく変更するスクリプトを示す
+- スクリプトは標準入力で現在のターゲット内容を受け取り、標準出力で結果を返す
+- jq を使って JSON の特定キーだけを更新できる
+
 ## 変更の正しいワークフロー
 
 ### 日常的な編集フロー
@@ -344,6 +396,7 @@ chezmoi update
 | `~/.config/yazi/` | yazi ファイルマネージャー |
 | `~/Library/Application Support/lazygit/` | lazygit 設定 |
 | `~/Library/Preferences/com.googlecode.iterm2.plist` | iTerm2 設定 |
+| `~/.claude.json` (部分) | Claude Code MCP サーバー設定のみ（`modify_` スクリプトで管理） |
 
 ## トラブルシューティング
 

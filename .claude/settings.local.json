@@ -3,7 +3,9 @@
     "allow": [
       "Bash(chezmoi add:*)",
       "Bash(chezmoi diff:*)",
-      "WebFetch(domain:yazi-rs.github.io)"
+      "WebFetch(domain:yazi-rs.github.io)",
+      "WebFetch(domain:docs.claude.com)",
+      "mcp__firecrawl__firecrawl_scrape"
     ]
   }
 }
