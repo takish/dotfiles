@@ -398,6 +398,67 @@ cat ~/.claude.json | jq '.mcpServers' > ~/.local/share/chezmoi/dot_claude.json.m
 | `~/Library/Preferences/com.googlecode.iterm2.plist` | iTerm2 設定 |
 | `~/.claude.json` (部分) | Claude Code MCP サーバー設定のみ（`modify_` スクリプトで管理） |
 
+## Claude Code MCP サーバー
+
+chezmoi で管理している MCP サーバーの一覧です。
+
+### 管理対象のサーバー
+
+| サーバー名 | 用途 | タイプ | 必要な環境変数 |
+|-----------|------|--------|--------------|
+| `chrome-devtools` | Chrome DevTools 連携（ブラウザ操作・デバッグ） | stdio | なし |
+| `figma-mcp` | Figma デザイン連携 | http | なし（ローカルサーバー必須） |
+| `firecrawl` | Web スクレイピング・検索 | stdio | `FIRECRAWL_API_KEY` |
+
+### セットアップ手順
+
+#### 1. 環境変数の設定
+
+`~/.zshrc.local`（マシン固有の設定ファイル）に追加：
+
+```bash
+# Firecrawl API Key (https://firecrawl.dev で取得)
+export FIRECRAWL_API_KEY="your-api-key-here"
+```
+
+※ `.zshrc.local` は chezmoi の管理対象外で、各マシンの秘密情報を保持
+
+#### 2. 各サーバーのインストール
+
+**chrome-devtools**: インストール不要（npx で自動実行）
+- Chrome を `--remote-debugging-port=9222` で起動する必要あり
+- 参考: https://github.com/nicholasoxford/chrome-devtools-mcp
+
+**figma-mcp**: Figma デスクトップアプリで MCP サーバーを起動
+1. Figma デスクトップアプリを開く
+2. Settings → Developer → Enable MCP Server
+3. `http://127.0.0.1:3845/mcp` でローカルサーバーが起動
+- 参考: https://help.figma.com/hc/en-us/articles/32132100833559
+
+**firecrawl**: インストール不要（npx で自動実行）
+- API キーが必要: https://firecrawl.dev でアカウント作成
+- 参考: https://docs.firecrawl.dev/mcp
+
+#### 3. chezmoi で MCP 設定を適用
+
+```bash
+chezmoi apply
+```
+
+### MCP 設定の更新方法
+
+Claude Code で MCP サーバーを追加・変更した場合：
+
+```bash
+# 現在の設定を chezmoi に反映
+cat ~/.claude.json | jq '.mcpServers' > ~/.local/share/chezmoi/dot_claude.json.mcpServers
+
+# コミット
+cd ~/.local/share/chezmoi
+git add dot_claude.json.mcpServers
+git commit -m "update MCP servers config"
+```
+
 ## トラブルシューティング
 
 ### Q: `chezmoi apply` しても反映されない
