@@ -1,0 +1,223 @@
+#!/bin/bash
+
+# Slack notification script for Claude Code hooks
+# Usage: slack-notify.sh [fallback_message]
+# Reads stdin for JSON payload from Claude Code hooks
+
+# Get Slack webhook URL from environment or use default
+SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL:-{{ env "SLACK_WEBHOOK_URL" }}}"
+
+# Default fallback message with timestamp
+TIMESTAMP=$(date '+%Y/%m/%d %H:%M:%S')
+FALLBACK_MESSAGE="${1:-応答を求めています ($TIMESTAMP)}"
+MESSAGE_BODY="$FALLBACK_MESSAGE"
+
+# Log file for debugging
+LOG_FILE="/tmp/claude-hook-debug.log"
+
+# Function to extract latest assistant message from transcript
+extract_from_transcript() {
+  local transcript_file="$1"
+
+  # Check if file exists
+  if [[ ! -f "$transcript_file" ]]; then
+    echo "[$(date)] Transcript file not found: $transcript_file" >> "$LOG_FILE"
+    return 1
+  fi
+
+  local extracted=""
+
+  # Strategy 1: Find the last assistant message that contains actual text content
+  # Filter for assistant messages that have "type":"text" in their content
+  extracted=$(tail -200 "$transcript_file" | \
+    grep '"role":"assistant"' | \
+    grep '"type":"text"' | \
+    tail -1 | \
+    jq -r '
+      if .message.content then
+        [.message.content[] | select(.type=="text") | .text] | join("\n")
+      else
+        empty
+      end
+    ' 2>/dev/null)
+
+  if [[ -n "$extracted" && "$extracted" != "null" && "$extracted" != "" ]]; then
+    echo "[$(date)] Found text content in assistant message" >> "$LOG_FILE"
+    echo "$extracted" | head -c 2000
+    return 0
+  fi
+
+  # Strategy 2: Try to get thinking content from the latest assistant message
+  extracted=$(tail -100 "$transcript_file" | \
+    grep '"role":"assistant"' | \
+    tail -1 | \
+    jq -r '
+      if .message.content then
+        [.message.content[] | select(.type=="thinking") | .thinking] | join("\n")
+      else
+        empty
+      end
+    ' 2>/dev/null)
+
+  if [[ -n "$extracted" && "$extracted" != "null" && "$extracted" != "" ]]; then
+    echo "[$(date)] Found thinking content in assistant message" >> "$LOG_FILE"
+    # Take first 500 chars of thinking as summary
+    echo "$extracted" | head -c 500
+    return 0
+  fi
+
+  # Strategy 3: Look for tool_use and extract tool name as context
+  extracted=$(tail -50 "$transcript_file" | \
+    grep '"role":"assistant"' | \
+    tail -1 | \
+    jq -r '
+      if .message.content then
+        [.message.content[] | select(.type=="tool_use") | "ツール実行中: \(.name)"] | join(", ")
+      else
+        empty
+      end
+    ' 2>/dev/null)
+
+  if [[ -n "$extracted" && "$extracted" != "null" && "$extracted" != "" ]]; then
+    echo "[$(date)] Found tool_use in assistant message" >> "$LOG_FILE"
+    echo "$extracted"
+    return 0
+  fi
+
+  echo "[$(date)] No extractable content found" >> "$LOG_FILE"
+  return 1
+}
+
+# Read stdin with timeout
+# Use timeout command for more reliable stdin reading
+STDIN_DATA=""
+if command -v timeout &> /dev/null; then
+  STDIN_DATA=$(timeout 3 cat 2>/dev/null || true)
+elif command -v gtimeout &> /dev/null; then
+  # macOS with coreutils
+  STDIN_DATA=$(gtimeout 3 cat 2>/dev/null || true)
+else
+  # Fallback: use read with timeout
+  while IFS= read -t 2 -r line; do
+    STDIN_DATA="${STDIN_DATA}${line}"$'\n'
+  done
+fi
+
+# Process stdin data if received
+if [[ -n "$STDIN_DATA" ]]; then
+  echo "[$(date)] Received stdin (${#STDIN_DATA} bytes): ${STDIN_DATA:0:300}..." >> "$LOG_FILE"
+
+  # Check if jq is available
+  if ! command -v jq &> /dev/null; then
+    echo "[$(date)] jq not found, using fallback" >> "$LOG_FILE"
+  else
+    # Extract hook event name
+    EVENT_NAME=$(echo "$STDIN_DATA" | jq -r '.hook_event_name // empty' 2>/dev/null)
+    echo "[$(date)] Event name: $EVENT_NAME" >> "$LOG_FILE"
+
+    # For Notification hook: check if it's a generic message, then extract context from transcript
+    if [[ "$EVENT_NAME" == "Notification" ]]; then
+      # Get message field from payload
+      DIRECT_MESSAGE=$(echo "$STDIN_DATA" | jq -r '.message // empty' 2>/dev/null)
+      TRANSCRIPT_PATH=$(echo "$STDIN_DATA" | jq -r '.transcript_path // empty' 2>/dev/null)
+
+      # Check if message is a generic one that needs context
+      NEEDS_CONTEXT=false
+      if [[ "$DIRECT_MESSAGE" == *"approval for the plan"* ]] || \
+         [[ "$DIRECT_MESSAGE" == *"waiting for your input"* ]] || \
+         [[ "$DIRECT_MESSAGE" == *"needs your attention"* ]] || \
+         [[ "$DIRECT_MESSAGE" == *"permission to use"* ]]; then
+        NEEDS_CONTEXT=true
+        echo "[$(date)] Generic message detected, will extract context" >> "$LOG_FILE"
+      fi
+
+      if [[ "$NEEDS_CONTEXT" == true && -n "$TRANSCRIPT_PATH" && -f "$TRANSCRIPT_PATH" ]]; then
+        # Extract context from transcript for generic messages
+        echo "[$(date)] Extracting context from transcript: $TRANSCRIPT_PATH" >> "$LOG_FILE"
+        EXTRACTED=$(extract_from_transcript "$TRANSCRIPT_PATH")
+
+        if [[ -n "$EXTRACTED" ]]; then
+          # Combine the notification type with context
+          # Truncate extracted content to fit Slack limits
+          TRUNCATED_EXTRACT=$(echo "$EXTRACTED" | head -c 2000)
+          MESSAGE_BODY="📢 *${DIRECT_MESSAGE}*
+
+---
+$TRUNCATED_EXTRACT"
+          echo "[$(date)] Added context from transcript to message" >> "$LOG_FILE"
+        else
+          MESSAGE_BODY="$DIRECT_MESSAGE"
+          echo "[$(date)] Failed to extract context, using direct message" >> "$LOG_FILE"
+        fi
+      elif [[ -n "$DIRECT_MESSAGE" && "$DIRECT_MESSAGE" != "null" ]]; then
+        MESSAGE_BODY="$DIRECT_MESSAGE"
+        echo "[$(date)] Using direct message from payload" >> "$LOG_FILE"
+      else
+        # Fallback: extract from transcript
+        if [[ -n "$TRANSCRIPT_PATH" && -f "$TRANSCRIPT_PATH" ]]; then
+          echo "[$(date)] Extracting from transcript: $TRANSCRIPT_PATH" >> "$LOG_FILE"
+          EXTRACTED=$(extract_from_transcript "$TRANSCRIPT_PATH")
+
+          if [[ -n "$EXTRACTED" ]]; then
+            MESSAGE_BODY="$EXTRACTED"
+            echo "[$(date)] Successfully extracted from transcript" >> "$LOG_FILE"
+          else
+            echo "[$(date)] Failed to extract from transcript" >> "$LOG_FILE"
+          fi
+        else
+          echo "[$(date)] No valid transcript path" >> "$LOG_FILE"
+        fi
+      fi
+    elif [[ "$EVENT_NAME" == "Stop" ]]; then
+      # Stop hook: keep simple message (as per user preference)
+      # Message body remains as fallback message or first argument
+      echo "[$(date)] Stop hook - using simple message" >> "$LOG_FILE"
+    else
+      # Unknown event: try to extract transcript anyway
+      TRANSCRIPT_PATH=$(echo "$STDIN_DATA" | jq -r '.transcript_path // empty' 2>/dev/null)
+
+      if [[ -n "$TRANSCRIPT_PATH" && -f "$TRANSCRIPT_PATH" ]]; then
+        EXTRACTED=$(extract_from_transcript "$TRANSCRIPT_PATH")
+        if [[ -n "$EXTRACTED" ]]; then
+          MESSAGE_BODY="$EXTRACTED"
+        fi
+      fi
+    fi
+  fi
+else
+  echo "[$(date)] No stdin data received" >> "$LOG_FILE"
+fi
+
+# Build final message with header
+MESSAGE="*Claude Codeからの通知*
+
+${MESSAGE_BODY}"
+
+# Send notification to Slack
+if command -v jq &> /dev/null; then
+  # Use jq for proper JSON encoding
+  MESSAGE_JSON=$(jq -n --arg text "$MESSAGE" '{text: $text}')
+  curl -s -X POST \
+    -H 'Content-type: application/json' \
+    --data "$MESSAGE_JSON" \
+    "$SLACK_WEBHOOK_URL" \
+    2>/dev/null
+else
+  # Fallback: manual JSON escaping
+  ESCAPED_MESSAGE=$(echo "$MESSAGE" | \
+    sed 's/\\/\\\\/g' | \
+    sed 's/"/\\"/g' | \
+    awk '{printf "%s\\n", $0}' | \
+    sed 's/\\n$//')
+
+  curl -s -X POST \
+    -H 'Content-type: application/json' \
+    --data "{\"text\":\"$ESCAPED_MESSAGE\"}" \
+    "$SLACK_WEBHOOK_URL" \
+    2>/dev/null
+fi
+
+echo "[$(date)] Notification sent: ${MESSAGE:0:150}..." >> "$LOG_FILE"
+
+# Return success even if curl fails (to not block Claude Code)
+exit 0

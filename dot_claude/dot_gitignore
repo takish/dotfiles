@@ -1,0 +1,18 @@
+# この配下のみで有効
+settings.local.json
+projects/
+cache/
+logs/
+statsig/
+todos/
+plans/
+shell-snapshots/
+debug/
+file-history/
+history.jsonl
+*.lock
+*.tmp
+secrets.*
+*.secret.json
+*.private.json
+.DS_Store

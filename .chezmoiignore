@@ -1,0 +1,37 @@
+# chezmoi ignore patterns
+
+# ~/.claude 配下の自動生成・一時ファイル
+.claude/.git/
+.claude/README.md
+.claude/settings.local.json
+.claude/hooks/.claude/
+.claude/projects/
+.claude/cache/
+.claude/logs/
+.claude/statsig/
+.claude/todos/
+.claude/plans/
+.claude/shell-snapshots/
+.claude/debug/
+.claude/file-history/
+.claude/history.jsonl
+.claude/session-env/
+.claude/stats-cache.json
+.claude/telemetry/
+.claude/docs/
+.claude/ide/
+.claude/plugins/
+.claude/.anthropic/
+.claude/.claude/
+.claude/.DS_Store
+
+# 一般的なパターン
+**/*.lock
+**/*.tmp
+**/secrets.*
+**/*.secret.json
+**/*.private.json
+**/.DS_Store
+
+# ローカル専用ファイル
+.zshrc.local

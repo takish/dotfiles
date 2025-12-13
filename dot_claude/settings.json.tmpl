@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "SLACK_WEBHOOK_URL": "{{ env "SLACK_WEBHOOK_URL" }}"
+  },
+  "permissions": {
+    "allow": [
+      "mcp__serena__replace_regex",
+      "mcp__serena__replace_symbol_body",
+      "mcp__serena__think_about_whether_you_are_done",
+      "mcp__serena__list_memories",
+      "mcp__serena__read_memory",
+      "mcp__serena__check_onboarding_performed",
+      "mcp__serena__find_file",
+      "mcp__serena__initial_instructions",
+      "mcp__serena__find_symbol",
+      "mcp__serena__list_dir",
+      "mcp__serena__search_for_pattern",
+      "mcp__serena__get_symbols_overview",
+      "mcp__serena__think_about_collected_information",
+      "mcp__chrome-devtools__new_page",
+      "mcp__chrome-devtools__take_snapshot",
+      "mcp__chrome-devtools__list_console_messages",
+      "mcp__chrome-devtools__list_network_requests",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__click",
+      "mcp__chrome-devtools__get_console_message",
+      "mcp__chrome-devtools__list_pages",
+      "mcp__chrome-devtools__evaluate_script",
+      "Read(**)",
+      "Write(src/**)",
+      "Write(docs/**)",
+      "Write(.tmp/**)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push origin:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(npm install:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm type-check:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(rm:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(osascript -e:*)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs",
+      "WebSearch",
+      "WebFetch(domain:tailscale.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:dorianmonnier.fr)",
+      "WebFetch(domain:pkg.go.dev)",
+      "WebFetch(domain:stackoverflow.com)",
+      "Bash(/Applications/Tailscale.app/Contents/MacOS/Tailscale up:*)",
+      "Bash(/Applications/Tailscale.app/Contents/MacOS/Tailscale set:*)",
+      "Bash(/Applications/Tailscale.app/Contents/MacOS/Tailscale status:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(rm -rf ~)",
+      "Bash(rm -rf /*)",
+      "Bash(sudo rm:*)",
+      "Bash(sudo dd:*)",
+      "Bash(sudo mkfs:*)",
+      "Bash(sudo fdisk:*)",
+      "Bash(sudo mount:*)",
+      "Bash(sudo umount:*)",
+      "Bash(dd:*)",
+      "Bash(mkfs:*)",
+      "Bash(fdisk:*)",
+      "Bash(> /dev/*)",
+      "Bash(>> /dev/*)",
+      "Bash(sudo:passwd:*)",
+      "Bash(sudo:shadow:*)",
+      "Bash(chmod 777 /*)",
+      "Bash(chown root:*)",
+      "Bash(sudo chmod 777:*)",
+      "Bash(sudo chown:*)",
+      "Bash(sudo -i:*)",
+      "Bash(sudo su:*)",
+      "Bash(rm -rf .git)",
+      "Bash(git push --force-with-lease origin main)",
+      "Bash(git push -f origin main)",
+      "Bash(docker system prune -af)",
+      "Bash(npm publish:*)",
+      "Bash(cargo publish:*)",
+      "Bash(deno publish:*)",
+      "Edit(/etc/**)",
+      "Edit(/usr/**)",
+      "Edit(/var/**)",
+      "Edit(/opt/**)",
+      "Edit(/bin/**)",
+      "Edit(/sbin/**)",
+      "Edit(/lib/**)",
+      "Edit(/lib64/**)",
+      "Edit(/boot/**)",
+      "Edit(/proc/**)",
+      "Edit(/sys/**)",
+      "Edit(/dev/**)",
+      "Edit(~/.ssh/id_*)",
+      "Edit(~/.ssh/*_rsa)",
+      "Edit(~/.ssh/*_ecdsa)",
+      "Edit(~/.ssh/*_ed25519)",
+      "Edit(/etc/passwd)",
+      "Edit(/etc/shadow)",
+      "Edit(/etc/sudoers)",
+      "Write(/etc/**)",
+      "Write(/usr/**)",
+      "Write(/var/**)",
+      "Write(/opt/**)",
+      "Write(/bin/**)",
+      "Write(/sbin/**)",
+      "Write(/lib/**)",
+      "Write(/lib64/**)",
+      "Write(/boot/**)",
+      "Write(/proc/**)",
+      "Write(/sys/**)",
+      "Write(/dev/**)",
+      "Write(~/.ssh/id_*)",
+      "Write(~/.ssh/*_rsa)",
+      "Write(~/.ssh/*_ecdsa)",
+      "Write(~/.ssh/*_ed25519)",
+      "Write(/etc/passwd)",
+      "Write(/etc/shadow)",
+      "Write(/etc/sudoers)",
+      "Bash(git reset:*)",
+      "Bash(git rebase:*)",
+      "Read(.env.*)",
+      "Read(id_rsa)",
+      "Read(id_ed25519)",
+      "Write(.env*)",
+      "Bash(wget:*)"
+    ]
+  },
+  "model": "opus",
+  "enableAllProjectMcpServers": false,
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/terminal-notify.sh"
+          },
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/slack-notify.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/terminal-notify.sh 'Claude Code' 'Stop Hook' 'タスクが完了しました'"
+          },
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/slack-notify.sh '🤖 タスクが完了しました。'"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "/Users/takish/.claude/statusline.js"
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-code-plugins": true
+  },
+  "alwaysThinkingEnabled": false,
+  "pluginMarketplaces": [
+    {
+      "type": "github",
+      "repository": "anthropics/skills"
+    },
+    {
+      "type": "github",
+      "repository": "obra/superpowers"
+    }
+  ],
+  "preferredNotifChannel": "auto",
+  "feedbackSurveyState": {
+    "lastShownTime": 1754116624072
+  },
+  "autoUpdates": true,
+  "mcpServers": {
+    "firecrawl": {
+      "type": "http",
+      "url": "https://api.firecrawl.dev/mcp",
+      "headers": {
+        "Authorization": "Bearer {{ env "FIRECRAWL_API_KEY" }}"
+      }
+    }
+  }
+}

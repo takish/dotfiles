@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(chezmoi add:*)",
-      "Bash(chezmoi diff:*)"
+      "Bash(chezmoi diff:*)",
+      "WebFetch(domain:yazi-rs.github.io)"
     ]
   }
 }
