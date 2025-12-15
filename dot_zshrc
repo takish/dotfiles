@@ -223,12 +223,12 @@ export PATH="/usr/local/texlive/2025basic/bin/universal-darwin/:$PATH"
 
 
 # --- tmux alias群 ---
-alias tc='tmux -L cursor new -As cursor'
-alias tw='tmux -L windsurf new -As windsurf'
-alias tv='tmux -L vscode new -As vscode'
-alias ti='tmux -L iterm new -As iterm'
-alias tls='ls -l /tmp/tmux-$(id -u)/'  # ソケット一覧
-alias tkill='for s in /tmp/tmux-$(id -u)/*; do tmux -S "$s" kill-server 2>/dev/null && echo "Killed: $s"; done'
+alias tc='tmux new -As cursor'
+alias tw='tmux new -As windsurf'
+alias tv='tmux new -As vscode'
+alias ti='tmux new -As iterm'
+alias tls='tmux ls'  # セッション一覧
+alias tkill='tmux kill-server'  # サーバー終了
 
 tnew() {
   local name=$1
@@ -236,7 +236,7 @@ tnew() {
     echo "Usage: tnew <name>"
     return 1
   fi
-  tmux -L "$name" new -As "$name"
+  tmux new -As "$name"
 }
 # --- end ---
 

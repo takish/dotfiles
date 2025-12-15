@@ -35,3 +35,6 @@
 
 # ローカル専用ファイル
 .zshrc.local
+
+# TPMで管理するプラグイン
+.tmux/plugins/
