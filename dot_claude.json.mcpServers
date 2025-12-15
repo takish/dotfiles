@@ -21,5 +21,15 @@
     "env": {
       "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}"
     }
+  },
+  "note-post-mcp": {
+    "type": "stdio",
+    "command": "npx",
+    "args": [
+      "@gonuts555/note-post-mcp@latest"
+    ],
+    "env": {
+      "NOTE_POST_MCP_STATE_PATH": "${NOTE_POST_MCP_STATE_PATH}"
+    }
   }
 }

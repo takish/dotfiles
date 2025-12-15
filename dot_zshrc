@@ -287,6 +287,9 @@ export PATH="/Users/takish/.antigravity/antigravity/bin:$PATH"
 #export PATH="$(brew --prefix ruby)/bin:$PATH"
 . /opt/homebrew/opt/asdf/libexec/asdf.sh
 
+# note-post-mcp (note.com MCP server)
+export NOTE_POST_MCP_STATE_PATH="$HOME/.note-state.json"
+
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
