@@ -38,3 +38,11 @@
 
 # TPMで管理するプラグイン
 .tmux/plugins/
+
+# セットアップスクリプト（ホームにコピー不要）
+01-install-homebrew.sh
+02-brew-bundle.sh
+Brewfile
+
+# 機密情報を含むファイル
+# .claude.json は modify_dot_claude.json で MCP 設定のみマージ管理

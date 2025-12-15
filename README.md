@@ -15,26 +15,7 @@ chezmoi（シェモア）は、複数のマシン間で dotfiles を安全に管
 - `chezmoi apply` でホームディレクトリにコピー
 - Git でバージョン管理＆複数マシン間で同期
 
-## 新しい Mac へのセットアップ
-
-新しい Mac では以下の 3 ステップで環境が構築されます：
-
-```bash
-# 1. Homebrew をインストール
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# 2. chezmoi をインストール
-brew install chezmoi
-
-# 3. dotfiles を適用（全自動）
-chezmoi init --apply https://github.com/<username>/dotfiles.git
-```
-
-これにより：
-- **Homebrew パッケージ**が自動インストール（Brewfile から）
-- **設定ファイル**がホームディレクトリにコピー
-
-### 手動セットアップ（既存 Mac）
+## セットアップ
 
 ```bash
 # chezmoi をインストール
@@ -49,24 +30,6 @@ chezmoi diff
 # 適用（実行）
 chezmoi apply
 ```
-
-## Brewfile（パッケージ管理）
-
-Homebrew でインストールするパッケージを宣言的に管理しています。
-
-```bash
-# Brewfile の中身を確認
-cat ~/.local/share/chezmoi/Brewfile
-
-# パッケージを追加した場合、Brewfile を更新
-brew bundle dump --file=~/.local/share/chezmoi/Brewfile --force
-```
-
-**含まれるパッケージ（抜粋）:**
-- 開発ツール: `git`, `neovim`, `tmux`, `lazygit`, `yazi`
-- 言語: `go`, `node`, `python@3.13`, `ruby`
-- インフラ: `terraform`, `azure-cli`, `supabase`
-- フォント: Nerd Font (Fira Code, JetBrains Mono)
 
 ## 重要な概念: ソースとターゲット
 

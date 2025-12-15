@@ -7,7 +7,10 @@
       "WebFetch(domain:docs.claude.com)",
       "mcp__firecrawl__firecrawl_scrape",
       "mcp__firecrawl__firecrawl_search",
-      "Bash(/bin/cp /tmp/claude_updated.json ~/.claude.json)"
+      "Bash(/bin/cp /tmp/claude_updated.json ~/.claude.json)",
+      "Bash(wc:*)",
+      "Bash(chezmoi managed:*)",
+      "Bash(~/.claude/hooks/slack-notify.sh:*)"
     ]
   }
 }

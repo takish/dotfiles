@@ -4,6 +4,11 @@
 # Usage: slack-notify.sh [fallback_message]
 # Reads stdin for JSON payload from Claude Code hooks
 
+# Load environment variables from zshrc.local (for chezmoi-managed secrets)
+if [[ -f "$HOME/.zshrc.local" ]]; then
+  source "$HOME/.zshrc.local"
+fi
+
 # Get Slack webhook URL from environment or use default
 SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL:-{{ env "SLACK_WEBHOOK_URL" }}}"
 
@@ -169,9 +174,27 @@ $TRUNCATED_EXTRACT"
         fi
       fi
     elif [[ "$EVENT_NAME" == "Stop" ]]; then
-      # Stop hook: keep simple message (as per user preference)
-      # Message body remains as fallback message or first argument
-      echo "[$(date)] Stop hook - using simple message" >> "$LOG_FILE"
+      # Stop hook: extract context from transcript for detailed message
+      TRANSCRIPT_PATH=$(echo "$STDIN_DATA" | jq -r '.transcript_path // empty' 2>/dev/null)
+      echo "[$(date)] Stop hook - extracting context from transcript" >> "$LOG_FILE"
+
+      if [[ -n "$TRANSCRIPT_PATH" && -f "$TRANSCRIPT_PATH" ]]; then
+        EXTRACTED=$(extract_from_transcript "$TRANSCRIPT_PATH")
+        if [[ -n "$EXTRACTED" ]]; then
+          TRUNCATED_EXTRACT=$(echo "$EXTRACTED" | head -c 2000)
+          MESSAGE_BODY="🤖 *タスクが完了しました*
+
+---
+$TRUNCATED_EXTRACT"
+          echo "[$(date)] Successfully extracted context for Stop hook" >> "$LOG_FILE"
+        else
+          MESSAGE_BODY="🤖 タスクが完了しました。"
+          echo "[$(date)] Failed to extract context, using default message" >> "$LOG_FILE"
+        fi
+      else
+        MESSAGE_BODY="🤖 タスクが完了しました。"
+        echo "[$(date)] No transcript path for Stop hook" >> "$LOG_FILE"
+      fi
     else
       # Unknown event: try to extract transcript anyway
       TRANSCRIPT_PATH=$(echo "$STDIN_DATA" | jq -r '.transcript_path // empty' 2>/dev/null)
