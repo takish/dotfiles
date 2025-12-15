@@ -282,6 +282,9 @@ alias ts-status="tailscale status"
 # DNS動作確認
 alias ts-dns-check="echo 'Testing anthropic.com:' && dscacheutil -q host -a name api.anthropic.com"
 
+# Brewfile 管理
+alias brewsync='brew bundle dump --file=~/.local/share/chezmoi/Brewfile --force && echo "✓ Brewfile updated"'
+
 # Added by Antigravity
 export PATH="/Users/takish/.antigravity/antigravity/bin:$PATH"
 #export PATH="$(brew --prefix ruby)/bin:$PATH"
