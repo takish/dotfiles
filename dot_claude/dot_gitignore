@@ -16,3 +16,4 @@ secrets.*
 *.secret.json
 *.private.json
 .DS_Store
+stats-cache.json
