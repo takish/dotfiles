@@ -1,0 +1,15 @@
+#!/bin/bash
+# Install packages from Brewfile
+# Uses chezmoi template to get correct source directory path
+
+set -e
+
+BREWFILE="{{ .chezmoi.sourceDir }}/Brewfile"
+
+if [[ -f "$BREWFILE" ]]; then
+    echo "Installing Homebrew packages from Brewfile..."
+    brew bundle install --file="$BREWFILE" --no-lock
+else
+    echo "Brewfile not found at $BREWFILE"
+    exit 1
+fi
