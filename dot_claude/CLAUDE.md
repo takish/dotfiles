@@ -68,3 +68,26 @@ echo '{"model":{"display_name":"Test"},"workspace":{"current_dir":"/test"},"sess
 - `Read/Write(.env*)`: Environment files protection
 - `Read(id_rsa, id_ed25519)`: SSH key protection
 - `Bash(git push:*)`: Direct push without origin specification
+
+## chezmoi 管理対象ファイル
+
+以下のファイルは chezmoi で管理されています。編集時は `~/.local/share/chezmoi/dot_claude/` のソースを編集してください。
+
+| ターゲット | ソース | 備考 |
+|-----------|--------|------|
+| `settings.json` | `settings.json.tmpl` | テンプレート。re-add不可、手動編集必須 |
+| `hooks/terminal-notify.sh` | `hooks/executable_terminal-notify.sh` | |
+| `hooks/slack-notify.sh` | `hooks/executable_slack-notify.sh` | |
+| `hooks/play-sound.sh` | `hooks/executable_play-sound.sh` | 通知音再生スクリプト |
+| `sounds/notification.wav` | `sounds/notification.wav` | Notification用の音 |
+| `sounds/stop.wav` | `sounds/stop.wav` | Stop用の音 |
+| `agents/*.md` | `agents/*.md` | カスタムエージェント定義 |
+| `commands/*.md` | `commands/*.md` | スラッシュコマンド定義 |
+| `CLAUDE.md` | `CLAUDE.md` | このファイル |
+| `.gitignore` | `dot_gitignore` | |
+
+### 編集ルール
+
+1. **テンプレートファイル（.tmpl）**: `chezmoi re-add` では更新されない。ソースを直接編集
+2. **通常ファイル**: ターゲット編集後に `chezmoi re-add` でソースに反映
+3. **新規ファイル**: `chezmoi add` でソースに追加

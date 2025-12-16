@@ -10,7 +10,8 @@
       "Bash(/bin/cp /tmp/claude_updated.json ~/.claude.json)",
       "Bash(wc:*)",
       "Bash(chezmoi managed:*)",
-      "Bash(~/.claude/hooks/slack-notify.sh:*)"
+      "Bash(~/.claude/hooks/slack-notify.sh:*)",
+      "Bash(~/.claude/hooks/play-sound.sh:*)"
     ]
   }
 }
