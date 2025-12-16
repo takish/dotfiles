@@ -21,6 +21,19 @@ echo '{"model":{"display_name":"Test"},"workspace":{"current_dir":"/test"},"sess
 
 # Test Slack notifications
 ~/.claude/hooks/slack-notify.sh "🤖 Test notification"
+
+# Test VOICEVOX voice notifications
+~/.claude/hooks/voicevox-play.sh completion
+~/.claude/hooks/voicevox-play.sh permission
+```
+
+### VOICEVOX Voice Generation
+```bash
+# Generate all voice files (requires VOICEVOX Engine running)
+~/.claude/scripts/generate-voices.sh [SPEAKER_ID]
+
+# List available speakers
+curl -s http://localhost:50021/speakers | jq '.[] | {name, styles: [.styles[].name]}'
 ```
 
 ## Architecture
@@ -29,10 +42,11 @@ echo '{"model":{"display_name":"Test"},"workspace":{"current_dir":"/test"},"sess
 
 1. **Status Line System**: Custom Node.js script (statusline.js) that monitors token usage by reading JSONL transcript files from projects/, calculates percentage of compaction threshold (160K tokens), and displays color-coded warnings
 
-2. **Notification Pipeline**: Dual notification system using:
+2. **Notification Pipeline**: Multi-channel notification system using:
    - macOS terminal-notifier for desktop alerts with Japanese messages
    - Slack webhook integration for remote notifications
-   - Both triggered on "Notification" and "Stop" hooks
+   - VOICEVOX voice synthesis for audio notifications (24 voice patterns)
+   - Triggered on Notification, Stop, SessionStart, SessionEnd hooks
 
 3. **Permission Framework**: Granular control system allowing specific git operations (with origin only), npm/pnpm package management, and file operations in src/docs/.tmp directories while blocking sudo, destructive rm -rf, and sensitive file access
 
@@ -76,11 +90,14 @@ echo '{"model":{"display_name":"Test"},"workspace":{"current_dir":"/test"},"sess
 | ターゲット | ソース | 備考 |
 |-----------|--------|------|
 | `settings.json` | `settings.json.tmpl` | テンプレート。re-add不可、手動編集必須 |
-| `hooks/terminal-notify.sh` | `hooks/executable_terminal-notify.sh` | |
-| `hooks/slack-notify.sh` | `hooks/executable_slack-notify.sh` | |
-| `hooks/play-sound.sh` | `hooks/executable_play-sound.sh` | 通知音再生スクリプト |
-| `sounds/notification.wav` | `sounds/notification.wav` | Notification用の音 |
-| `sounds/stop.wav` | `sounds/stop.wav` | Stop用の音 |
+| `hooks/terminal-notify.sh` | `hooks/executable_terminal-notify.sh` | デスクトップ通知 |
+| `hooks/slack-notify.sh` | `hooks/executable_slack-notify.sh` | Slack通知 |
+| `hooks/voicevox-play.sh` | `hooks/executable_voicevox-play.sh` | VOICEVOX音声再生 |
+| `hooks/play-sound.sh` | `hooks/executable_play-sound.sh` | 効果音再生（旧） |
+| `scripts/generate-voices.sh` | `scripts/executable_generate-voices.sh` | VOICEVOX音声生成 |
+| `sounds/voicevox/*.wav` | `sounds/voicevox/*.wav` | VOICEVOX音声ファイル（24個） |
+| `sounds/notification.wav` | `sounds/notification.wav` | 効果音（旧） |
+| `sounds/stop.wav` | `sounds/stop.wav` | 効果音（旧） |
 | `agents/*.md` | `agents/*.md` | カスタムエージェント定義 |
 | `commands/*.md` | `commands/*.md` | スラッシュコマンド定義 |
 | `CLAUDE.md` | `CLAUDE.md` | このファイル |

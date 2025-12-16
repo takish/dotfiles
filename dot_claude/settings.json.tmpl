@@ -140,6 +140,66 @@
   "hooks": {
     "Notification": [
       {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/voicevox-play.sh permission"
+          },
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/terminal-notify.sh"
+          },
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/slack-notify.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/voicevox-play.sh idle"
+          },
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/terminal-notify.sh"
+          },
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/slack-notify.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "auth_success",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/voicevox-play.sh auth"
+          }
+        ]
+      },
+      {
+        "matcher": "elicitation_dialog",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/voicevox-play.sh elicitation"
+          },
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/terminal-notify.sh"
+          },
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/slack-notify.sh"
+          }
+        ]
+      },
+      {
         "hooks": [
           {
             "type": "command",
@@ -148,10 +208,6 @@
           {
             "type": "command",
             "command": "/Users/takish/.claude/hooks/slack-notify.sh"
-          },
-          {
-            "type": "command",
-            "command": "/Users/takish/.claude/hooks/play-sound.sh notification"
           }
         ]
       }
@@ -161,15 +217,45 @@
         "hooks": [
           {
             "type": "command",
+            "command": "/Users/takish/.claude/hooks/voicevox-play.sh completion"
+          },
+          {
+            "type": "command",
             "command": "/Users/takish/.claude/hooks/terminal-notify.sh 'Claude Code' 'Stop Hook' 'タスクが完了しました'"
           },
           {
             "type": "command",
             "command": "/Users/takish/.claude/hooks/slack-notify.sh"
-          },
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
           {
             "type": "command",
-            "command": "/Users/takish/.claude/hooks/play-sound.sh stop"
+            "command": "/Users/takish/.claude/hooks/voicevox-play.sh startup"
+          }
+        ]
+      },
+      {
+        "matcher": "resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/voicevox-play.sh resume"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/takish/.claude/hooks/voicevox-play.sh session_end"
           }
         ]
       }
