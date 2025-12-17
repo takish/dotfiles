@@ -28,5 +28,12 @@ FILES=("$SOUND_DIR/${CATEGORY}_"*.wav)
 [[ ! -f "${FILES[0]}" ]] && exit 0
 
 SELECTED="${FILES[$RANDOM % ${#FILES[@]}]}"
-afplay "$SELECTED" &
+
+# ミュート時は何もしない
+[[ "${VOICEVOX_MUTE:-0}" == "1" ]] && exit 0
+
+# 音量設定（デフォルト0.7、環境変数で上書き可能）
+VOLUME="${VOICEVOX_VOLUME:-0.7}"
+
+afplay -v "$VOLUME" "$SELECTED" &
 exit 0
