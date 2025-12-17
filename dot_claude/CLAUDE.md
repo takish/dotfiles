@@ -68,6 +68,16 @@ curl -s http://localhost:50021/speakers | jq '.[] | {name, styles: [.styles[].na
 - `SLACK_WEBHOOK_URL`: Set in settings.json for Slack notifications
 - Hooks receive standard shell environment plus Claude Code context
 
+### VOICEVOX Environment Variables
+| 変数 | 値 | 説明 |
+|------|-----|------|
+| `VOICEVOX_MODE` | `se` | 強制的にSE（効果音）を使用。未設定時はVOICEVOX優先 |
+| `VOICEVOX_MUTE` | `1` | 音声を無効化 |
+| `VOICEVOX_VOLUME` | `0.0-1.0` | 音量（デフォルト: 0.7） |
+| `VOICEVOX_CHARACTER` | キャラ名 | キャラクター指定（通常はsession_idから自動決定） |
+
+Available characters: `zundamon`, `shikoku_metan`, `tohoku_itako`, `voidoll`, `whitecul`, `aoyama_ryusei`
+
 ## File Patterns
 
 ### Allowed Operations
