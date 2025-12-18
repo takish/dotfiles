@@ -1,4 +1,14 @@
 {
+  "obsidian": {
+    "type": "stdio",
+    "command": "npx",
+    "args": [
+      "-y",
+      "mcp-obsidian",
+      "/Users/takish/Library/Mobile Documents/iCloud~md~obsidian/Documents/myvault"
+    ],
+    "env": {}
+  },
   "chrome-devtools": {
     "type": "stdio",
     "command": "npx",
