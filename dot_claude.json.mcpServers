@@ -4,10 +4,11 @@
     "command": "npx",
     "args": [
       "-y",
-      "mcp-obsidian",
-      "/Users/takish/Library/Mobile Documents/iCloud~md~obsidian/Documents/myvault"
+      "@kazuph/mcp-obsidian"
     ],
-    "env": {}
+    "env": {
+      "OBSIDIAN_VAULT_PATH": "/Users/takish/Library/Mobile Documents/iCloud~md~obsidian/Documents/myvault"
+    }
   },
   "chrome-devtools": {
     "type": "stdio",
