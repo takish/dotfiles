@@ -4,8 +4,8 @@
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-MCP_CONFIG="$SCRIPT_DIR/dot_claude.json.mcpServers"
+# Read from target file (chezmoi processes templates before running modify scripts)
+MCP_CONFIG="$HOME/.claude.json.mcpServers"
 
 # Read current file from stdin
 current=$(cat)

@@ -30,7 +30,7 @@
       "firecrawl-mcp"
     ],
     "env": {
-      "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}"
+      "FIRECRAWL_API_KEY": "{{ env "FIRECRAWL_API_KEY" }}"
     }
   },
   "note-post-mcp": {
@@ -40,7 +40,7 @@
       "@gonuts555/note-post-mcp@latest"
     ],
     "env": {
-      "NOTE_POST_MCP_STATE_PATH": "${NOTE_POST_MCP_STATE_PATH}"
+      "NOTE_POST_MCP_STATE_PATH": "{{ env "NOTE_POST_MCP_STATE_PATH" }}"
     }
   }
 }
