@@ -1,0 +1,27 @@
+{
+  "theme": "Default",
+  "selectedAuthType": "oauth-personal",
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["chrome-devtools-mcp@latest"]
+    },
+    "figma-mcp": {
+      "httpUrl": "http://127.0.0.1:3845/mcp"
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "{{ env "FIRECRAWL_API_KEY" }}"
+      }
+    },
+    "note-post-mcp": {
+      "command": "npx",
+      "args": ["@gonuts555/note-post-mcp@latest"],
+      "env": {
+        "NOTE_POST_MCP_STATE_PATH": "{{ env "NOTE_POST_MCP_STATE_PATH" }}"
+      }
+    }
+  }
+}
