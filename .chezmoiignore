@@ -39,6 +39,9 @@
 # TPMで管理するプラグイン
 .tmux/plugins/
 
+# tmux-resurrect のセッションデータ
+.tmux/resurrect/
+
 # セットアップスクリプト（ホームにコピー不要）
 01-install-homebrew.sh
 02-brew-bundle.sh
