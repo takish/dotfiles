@@ -126,8 +126,11 @@ bindkey '^R' history-incremental-pattern-search-backward
 ########################################
 # エイリアス
 
-alias la='ls -a'
-alias ll='ls -l'
+# eza (ls 置換) - アイコン・Git状態表示対応
+alias ls='eza --icons --git'
+alias la='eza --icons --git -a'
+alias ll='eza --icons --git -l'
+alias lt='eza --icons --git --tree --level=2'
 
 alias rm='rm -i'
 alias cp='cp -i'
@@ -163,12 +166,12 @@ case ${OSTYPE} in
     darwin*)
         #Mac用の設定
         export CLICOLOR=1
- 	export LSCOLORS=hxfxcxdxbxegedabagacad
-        alias ls='ls -G -F'
+        export LSCOLORS=hxfxcxdxbxegedabagacad
+        # ls は eza で置換（エイリアスセクションで設定）
         ;;
     linux*)
         #Linux用の設定
-        alias ls='ls -F --color=auto'
+        # ls は eza で置換（エイリアスセクションで設定）
         ;;
 esac
 
@@ -320,6 +323,7 @@ zinit light-mode for \
 zinit snippet PZT::modules/helper/init.zsh
 
 # oh-my-zshのセットアップ
+zinit snippet OMZL::async_prompt.zsh
 zinit snippet OMZL::git.zsh
 zinit snippet OMZP::git # <- なんかおまじないらしい
 zinit cdclear -q
@@ -348,10 +352,16 @@ zinit light gimbo/iterm2-tabs.zsh
 # 要 jq
 zinit light reegnz/jq-zsh-plugin
 
-# Gitの変更状態がわかる ls。ls の代わりにコマンド `k` を実行するだけ。
-zinit light supercrabtree/k
+# k プラグインは eza に置換したため削除
 
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+########################################
+# Modern CLI Tools
+########################################
+
+# fzf - fuzzy finder
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
