@@ -46,3 +46,21 @@ Brewfile
 
 # 機密情報を含むファイル
 # .claude.json は modify_dot_claude.json で MCP 設定のみマージ管理
+.claude.json.backup
+.claude/downloads/
+.claude/local/
+
+# ~/.codex 配下の自動生成・認証ファイル
+.codex/auth.json
+.codex/history.jsonl
+.codex/log/
+.codex/sessions/
+.codex/skills/.system/
+.codex/version.json
+
+# ~/.gemini 配下の自動生成・認証ファイル
+.gemini/google_accounts.json
+.gemini/oauth_creds.json
+.gemini/settings.json.orig
+.gemini/state.json
+.gemini/tmp/
