@@ -61,7 +61,9 @@
       "mcp__obsidian__obsidian_read_notes",
       "mcp__obsidian__obsidian_write_note",
       "Bash(git -C /Users/takish/.local/share/chezmoi diff)",
-      "Bash(git -C /Users/takish/.local/share/chezmoi diff --cached)"
+      "Bash(git -C /Users/takish/.local/share/chezmoi diff --cached)",
+      "Bash(brew list:*)",
+      "Bash(brew install:*)"
     ]
   }
 }
