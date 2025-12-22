@@ -141,6 +141,26 @@ chezmoi init --apply https://github.com/<username>/dotfiles.git
 # これで全ての設定ファイルがホームディレクトリにコピーされる
 ```
 
+**手動で配置が必要なファイル:**
+
+chezmoi で管理していない環境固有のファイルを手動で作成する：
+
+1. `~/.config/chezmoi/chezmoi.toml`
+
+```toml
+[scriptEnv]
+  FIRECRAWL_API_KEY = "your-api-key"
+  NOTE_POST_MCP_STATE_PATH = "/Users/your-username/.note-state.json"
+```
+
+2. `~/.zshrc.local`
+
+```bash
+export SLACK_WEBHOOK_URL="https://hooks.slack.com/services/xxx/xxx/xxx"
+```
+
+※ これらは機密情報を含むため Git 管理対象外
+
 ### ケース5: 変更を適用する前に確認したい
 
 **状況:** `chezmoi apply` で何が変わるか事前に知りたい
