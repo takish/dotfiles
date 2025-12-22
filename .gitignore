@@ -6,3 +6,4 @@
 
 # Lock files
 *.lock
+.claude/settings.local.json
