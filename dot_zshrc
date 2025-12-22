@@ -232,6 +232,7 @@ alias tv='tmux new -As vscode'
 alias ti='tmux new -As iterm'
 alias tls='tmux ls'  # セッション一覧
 alias tkill='tmux kill-server'  # サーバー終了
+alias tsr='tmux source-file ~/.tmux.conf'  # 設定再読込
 
 tnew() {
   local name=$1
