@@ -46,6 +46,7 @@
 01-install-homebrew.sh
 02-brew-bundle.sh
 Brewfile
+README.md
 
 # 機密情報を含むファイル
 # .claude.json は modify_dot_claude.json で MCP 設定のみマージ管理
@@ -67,3 +68,7 @@ Brewfile
 .gemini/settings.json.orig
 .gemini/state.json
 .gemini/tmp/
+
+# ~/.aws 配下の機密・キャッシュファイル
+.aws/credentials
+.aws/sso/
