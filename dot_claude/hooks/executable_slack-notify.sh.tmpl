@@ -173,6 +173,33 @@ $TRUNCATED_EXTRACT"
           echo "[$(date)] No valid transcript path" >> "$LOG_FILE"
         fi
       fi
+    elif [[ "$EVENT_NAME" == "PermissionRequest" ]]; then
+      # PermissionRequest hook: show tool name and command details
+      TOOL_NAME=$(echo "$STDIN_DATA" | jq -r '.tool_name // "Unknown"' 2>/dev/null)
+      # Extract command or file path depending on tool type
+      TOOL_INPUT=$(echo "$STDIN_DATA" | jq -r '
+        .tool_input |
+        if type == "object" then
+          if .command then .command
+          elif .file_path then .file_path
+          else (. | tostring)
+          end
+        else .
+        end
+      ' 2>/dev/null)
+
+      # Truncate long commands
+      if [[ ${#TOOL_INPUT} -gt 500 ]]; then
+        TOOL_INPUT="${TOOL_INPUT:0:500}..."
+      fi
+
+      MESSAGE_BODY="🔐 *Permission Request*
+ツール: \`$TOOL_NAME\`
+内容:
+\`\`\`
+$TOOL_INPUT
+\`\`\`"
+      echo "[$(date)] PermissionRequest hook - tool: $TOOL_NAME" >> "$LOG_FILE"
     elif [[ "$EVENT_NAME" == "Stop" ]]; then
       # Stop hook: extract context from transcript for detailed message
       TRANSCRIPT_PATH=$(echo "$STDIN_DATA" | jq -r '.transcript_path // empty' 2>/dev/null)
