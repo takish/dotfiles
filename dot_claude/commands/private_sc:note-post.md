@@ -6,7 +6,7 @@
 
 下書きファイル: $ARGUMENTS
 
-例: `draft-limiter-20251221.md` または `80_note/03_Drafts/draft-limiter-20251221.md`
+例: `20251221-draft-limiter.md` または `80_note/03_Drafts/2025-1221-draft-limiter.md`
 
 ---
 

@@ -81,9 +81,9 @@ created: YYYY-MM-DD
 
 ファイルを `80_note/03_Drafts/` に保存してください。
 
-ファイル名: `outline-[タイトル略称]-[日付].md`
+ファイル名: `[日付]-outline-[タイトル略称].md`
 
-例: `outline-limiter-20251221.md`
+例: `20251221-outline-limiter.md`
 
 ---
 

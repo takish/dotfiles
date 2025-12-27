@@ -8,6 +8,6 @@ require('keymaps')
 require('plugins')
 
 -- 各種セットアップ（例：Tree-sitter, LSPなど）
-require('setup.treesitter')
+-- require('setup.treesitter')  -- プラグイン定義内で設定するためコメントアウト
 require('setup.lspconfig')
 
