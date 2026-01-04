@@ -51,6 +51,7 @@ curl -s http://localhost:50021/speakers | jq '.[] | {name, styles: [.styles[].na
 3. **Permission Framework**: Granular control system allowing specific git operations (with origin only), npm/pnpm package management, and file operations in src/docs/.tmp directories while blocking sudo, destructive rm -rf, and sensitive file access
 
 4. **Custom Agents**: Specialized AI agents optimized for practical development tasks:
+   - **plan**: Design and planning for RISK tasks (DB changes, authentication, architecture changes), creates design contracts without implementation
    - **backend-engineer**: API implementation, database operations, authentication, business logic, Next.js API routes
    - **frontend-engineer**: React/Next.js components, TypeScript, Tailwind CSS, UI/UX implementation
    - **code-debugger**: Bug fixing, error analysis, troubleshooting, runtime issues
