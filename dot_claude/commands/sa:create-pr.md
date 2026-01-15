@@ -1,7 +1,16 @@
 ---
-allowed-tools: Bash(gh:*), Bash(git:*), Read(.github/*)
+allowed-tools: Task
 description: "Push a Pull Request Draft (PR Number Optional)"
 ---
+
+Task ツールを使って、以下のプロンプトを実行してください。
+
+- subagent_type: Bash
+- model: sonnet
+- description: "Create PR draft"
+
+<prompt>
+**絶対ルール: ベースブランチは必ず `develop` にすること。`main` への PR は禁止。**
 
 以下の手順で新しいPull request(PR)を作成してください。
 
@@ -33,8 +42,8 @@ gh pr view $ARGUMENT
 直前コミット及び手本PRの内容を元に、以下のコマンドを使用して新規PRを作成します。
 
 ```bash
-# 変数の設定
-PR_BASE_BRANCH="develop"
+# 変数の設定（変更禁止）
+PR_BASE_BRANCH="develop"  # 必ず develop。main 禁止
 PR_TEMPLATE=".github/PULL_REQUEST_TEMPLATE.md"
 PR_TITLE="<直前コミット/手本PRを参考にPRタイトルを作成してください>"
 PR_BODY="<直前コミット/手本PRを参考にPR内容を作成してください>"
@@ -54,3 +63,4 @@ PR_BODY="<直前コミット/手本PRを参考にPR内容を作成してくだ�
 ```bash
 gh pr view --web
 ```
+</prompt>

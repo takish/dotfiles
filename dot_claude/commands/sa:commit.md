@@ -1,8 +1,15 @@
 ---
-allowed-tools: Bash(git:*), Read(**)
+allowed-tools: Task
 description: "Commit staged changes with auto-generated message"
 ---
 
+Task ツールを使って、以下のプロンプトを実行してください。
+
+- subagent_type: Bash
+- model: sonnet
+- description: "Auto-generate commit"
+
+<prompt>
 以下の手順で変更をコミットしてください。
 
 1. 変更の確認とステージング
@@ -99,3 +106,4 @@ git status
 ```bash
 git log -1 --stat
 ```
+</prompt>
