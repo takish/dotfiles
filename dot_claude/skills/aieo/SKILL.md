@@ -1,18 +1,25 @@
 ---
 name: aieo
-description: AI Engine Optimization（AIEO）に最適化されたコンテンツを生成。AI Overviews、ChatGPT、Geminiに引用・要約されやすい構造で執筆する。
+description: AI Engine Optimization（AIEO）に最適化されたコンテンツを生成・リファクタ。AI Overviews、ChatGPT、Geminiに引用・要約されやすい構造で執筆する。
+model: sonnet
 ---
 
-# AIEO Optimized Content Generator
+# AIEO Optimized Content
 
-AI Overviews / ChatGPT / Gemini に引用・要約されやすい構造でコンテンツを執筆します。
+AI Overviews / ChatGPT / Gemini に引用・要約されやすい構造でコンテンツを執筆・リファクタします。
 
-## 入力情報
+## モード
 
+### 新規作成
 以下の情報を指定してください：
 - テーマ
 - 想定読者
 - 文字数目安
+
+### 既存コンテンツのリファクタ
+- 情報は削除しすぎない
+- 表現は簡潔に
+- 構造を最優先で再設計
 
 ## 構造ルール
 
@@ -52,3 +59,10 @@ AI Overviews / ChatGPT / Gemini に引用・要約されやすい構造でコン
 - Markdown
 - 見出しは H2 / H3 のみ
 - コードブロック・表は積極的に使う
+
+## リファクタ時の評価（必須）
+
+リファクタの場合、出力の最後に以下を含めること：
+- AIEO適合度（0〜100）
+- AIに引用されやすい段落トップ3
+- 改善余地がある点（最大3つ）

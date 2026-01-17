@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is the Claude Code configuration directory (~/.claude) containing user-specific settings, custom agents, output styles, and project metadata.
+This is the Claude Code configuration directory (~/.claude) containing user-specific settings, skills, and project metadata.
 
 ## Commands
 
@@ -50,22 +50,32 @@ curl -s http://localhost:50021/speakers | jq '.[] | {name, styles: [.styles[].na
 
 3. **Permission Framework**: Granular control system allowing specific git operations (with origin only), npm/pnpm package management, and file operations in src/docs/.tmp directories while blocking sudo, destructive rm -rf, and sensitive file access
 
-4. **Custom Agents** (`agents/`): Specialized AI agents with forced model and isolated context:
-   - **commit**: Auto-generate commit message and commit (sonnet)
-   - **create-pr**: Create PR draft to develop branch (sonnet)
-   - **ship**: commit → push → create-pr in sequence (sonnet)
-   - **plan**: Design and planning for RISK tasks (DB changes, authentication, architecture changes)
-   - **backend-engineer**: API implementation, database operations, authentication, business logic
-   - **frontend-engineer**: React/Next.js components, TypeScript, Tailwind CSS, UI/UX
-   - **code-debugger**: Bug fixing, error analysis, troubleshooting
-   - **performance-optimizer**: Performance bottleneck identification, query optimization
-   - **test-engineer**: Test strategy, unit/integration/E2E test implementation
+4. **Skills** (`skills/`): Agent Skills format for context injection and workflows:
 
-5. **Skills** (`skills/`): Agent Skills format for context injection and workflows:
-   - **Personas**: architect, engineer, debugger, designer, ios-engineer, product-owner, reviewer
-   - **Code Checks**: code-review, design-check, performance-check, security-check, seo-check, test-coverage
-   - **Content**: aieo, aieo-refactor, serena
-   - **Private**: note-outline, note-draft, note-rewrite, note-verify, note-post, suno-analyze, suno-pack, x-from-note
+   **設計・判断系（Opus）**
+   - **plan**: アーキテクチャ設計 + ビジネス判断
+   - **review**: コードレビュー（セキュリティ、パフォーマンス含む）
+   - **design**: UI/UX設計・検証
+
+   **実行・実装系（Sonnet）**
+   - **engineer**: コード実装
+   - **debugger**: バグ切り分け・修正
+   - **ios-engineer**: Swift/SwiftUI実装
+   - **test-coverage**: テストコード生成
+
+   **コンテンツ系**
+   - **seo**: SEOチェック（テクニカル + コンテンツ）
+   - **aieo**: AIEO最適化コンテンツ生成・リファクタ
+   - **serena**: 拡張分析モード
+
+   **ワークフロー**
+   - **commit**: コミットメッセージ自動生成・コミット
+   - **create-pr**: PRドラフト作成
+   - **ship**: commit → push → PR作成を一括実行
+
+   **Private**
+   - note-outline, note-draft, note-rewrite, note-verify, note-post
+   - suno-analyze, suno-pack, x-from-note
 
 ## Hook System
 
@@ -118,7 +128,6 @@ Available characters: `zundamon`, `shikoku_metan`, `tohoku_itako`, `voidoll`, `w
 | `sounds/voicevox/*.wav` | `sounds/voicevox/*.wav` | VOICEVOX音声ファイル（24個） |
 | `sounds/notification.wav` | `sounds/notification.wav` | 効果音（旧） |
 | `sounds/stop.wav` | `sounds/stop.wav` | 効果音（旧） |
-| `agents/*.md` | `agents/*.md` | カスタムエージェント定義（sonnet強制、コンテキスト分離） |
 | `skills/*/SKILL.md` | `skills/*/SKILL.md` | Agent Skills（コンテキスト投入、ワークフロー） |
 | `CLAUDE.md` | `CLAUDE.md` | このファイル |
 | `.gitignore` | `dot_gitignore` | |
