@@ -72,3 +72,6 @@ README.md
 # ~/.aws 配下の機密・キャッシュファイル
 .aws/credentials
 .aws/sso/
+
+# iTerm2 (頻繁に変わるため diff から除外、ソースは履歴として保持)
+Library/Preferences/com.googlecode.iterm2.plist
