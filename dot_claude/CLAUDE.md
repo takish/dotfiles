@@ -50,13 +50,22 @@ curl -s http://localhost:50021/speakers | jq '.[] | {name, styles: [.styles[].na
 
 3. **Permission Framework**: Granular control system allowing specific git operations (with origin only), npm/pnpm package management, and file operations in src/docs/.tmp directories while blocking sudo, destructive rm -rf, and sensitive file access
 
-4. **Custom Agents**: Specialized AI agents optimized for practical development tasks:
-   - **plan**: Design and planning for RISK tasks (DB changes, authentication, architecture changes), creates design contracts without implementation
-   - **backend-engineer**: API implementation, database operations, authentication, business logic, Next.js API routes
-   - **frontend-engineer**: React/Next.js components, TypeScript, Tailwind CSS, UI/UX implementation
-   - **code-debugger**: Bug fixing, error analysis, troubleshooting, runtime issues
-   - **performance-optimizer**: Performance bottleneck identification, query optimization, rendering optimization, caching strategies
-   - **test-engineer**: Test strategy, unit/integration/E2E test implementation, test coverage improvement, test debugging
+4. **Custom Agents** (`agents/`): Specialized AI agents with forced model and isolated context:
+   - **commit**: Auto-generate commit message and commit (sonnet)
+   - **create-pr**: Create PR draft to develop branch (sonnet)
+   - **ship**: commit → push → create-pr in sequence (sonnet)
+   - **plan**: Design and planning for RISK tasks (DB changes, authentication, architecture changes)
+   - **backend-engineer**: API implementation, database operations, authentication, business logic
+   - **frontend-engineer**: React/Next.js components, TypeScript, Tailwind CSS, UI/UX
+   - **code-debugger**: Bug fixing, error analysis, troubleshooting
+   - **performance-optimizer**: Performance bottleneck identification, query optimization
+   - **test-engineer**: Test strategy, unit/integration/E2E test implementation
+
+5. **Skills** (`skills/`): Agent Skills format for context injection and workflows:
+   - **Personas**: architect, engineer, debugger, designer, ios-engineer, product-owner, reviewer
+   - **Code Checks**: code-review, design-check, performance-check, security-check, seo-check, test-coverage
+   - **Content**: aieo, aieo-refactor, serena
+   - **Private**: note-outline, note-draft, note-rewrite, note-verify, note-post, suno-analyze, suno-pack, x-from-note
 
 ## Hook System
 
@@ -109,8 +118,8 @@ Available characters: `zundamon`, `shikoku_metan`, `tohoku_itako`, `voidoll`, `w
 | `sounds/voicevox/*.wav` | `sounds/voicevox/*.wav` | VOICEVOX音声ファイル（24個） |
 | `sounds/notification.wav` | `sounds/notification.wav` | 効果音（旧） |
 | `sounds/stop.wav` | `sounds/stop.wav` | 効果音（旧） |
-| `agents/*.md` | `agents/*.md` | カスタムエージェント定義 |
-| `commands/*.md` | `commands/*.md` | スラッシュコマンド定義 |
+| `agents/*.md` | `agents/*.md` | カスタムエージェント定義（sonnet強制、コンテキスト分離） |
+| `skills/*/SKILL.md` | `skills/*/SKILL.md` | Agent Skills（コンテキスト投入、ワークフロー） |
 | `CLAUDE.md` | `CLAUDE.md` | このファイル |
 | `.gitignore` | `dot_gitignore` | |
 
