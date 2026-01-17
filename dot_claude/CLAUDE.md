@@ -58,6 +58,7 @@ curl -s http://localhost:50021/speakers | jq '.[] | {name, styles: [.styles[].na
    - **design**: UI/UX設計・検証
 
    **実行・実装系（Sonnet）**
+   - **ask**: ちょっとした質問にサクッと回答
    - **engineer**: コード実装
    - **debugger**: バグ切り分け・修正
    - **ios-engineer**: Swift/SwiftUI実装
