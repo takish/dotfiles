@@ -12,7 +12,9 @@ current=$(cat)
 
 if [[ -f "$MCP_CONFIG" ]]; then
     mcp_servers=$(cat "$MCP_CONFIG")
-    echo "$current" | jq --argjson mcp "$mcp_servers" '.mcpServers = $mcp'
+    # Use -j to suppress trailing newline (Claude Code saves without trailing newline)
+    echo "$current" | jq -j --argjson mcp "$mcp_servers" '.mcpServers = $mcp'
 else
-    echo "$current"
+    # Remove trailing newline to match Claude Code's format
+    printf '%s' "$current"
 fi
