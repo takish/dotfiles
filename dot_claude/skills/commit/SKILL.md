@@ -1,6 +1,7 @@
 ---
 name: commit
 description: 変更をコミット。差分を分析し、リポジトリのスタイルに合わせたコミットメッセージを自動生成する。
+model: sonnet
 allowed-tools: Task
 ---
 

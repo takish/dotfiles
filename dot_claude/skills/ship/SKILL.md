@@ -1,6 +1,7 @@
 ---
 name: ship
 description: 変更をコミットし、Pull Requestを作成。差分を分析し、コミット→プッシュ→PR作成を一括実行する。
+model: sonnet
 allowed-tools: Task
 ---
 
@@ -21,6 +22,32 @@ description: "Commit and create PR"
 ## プロンプト
 
 以下の手順で変更をコミットし、PRを作成してください。
+
+---
+
+## Phase 0: ブランチ確認と作成
+
+### 0-1. 現在のブランチを確認
+
+```bash
+git branch --show-current
+```
+
+### 0-2. feature branch の作成（必要な場合）
+
+現在のブランチが `main`、`master`、または `develop` の場合:
+
+1. `git diff` と `git diff --cached` で変更内容を確認
+2. 変更内容から適切なブランチ名を生成:
+   - プレフィックス: `feat/`, `fix/`, `refactor/`, `docs/` など
+   - 変更の要約を kebab-case で（例: `feat/add-logout-button`）
+3. feature branch を作成してチェックアウト:
+
+```bash
+git checkout -b <生成したブランチ名>
+```
+
+上記以外のブランチ（既に feature branch にいる場合）はこのステップをスキップ。
 
 ---
 

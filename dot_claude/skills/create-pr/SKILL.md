@@ -1,6 +1,7 @@
 ---
 name: create-pr
 description: Pull Requestドラフトを作成。直前のコミットを分析し、ghコマンドでPRを作成してブラウザで開く。
+model: sonnet
 allowed-tools: Task
 ---
 
